@@ -1,4 +1,5 @@
 class Apirefrence {
+  //ApiResponse
   constructor(statusCode, data, message = "success") {
     this.statusCode = statusCode;
     this.data = data;
@@ -6,3 +7,5 @@ class Apirefrence {
     this.success = statusCode < 400;
   }
 }
+
+export { Apirefrence };

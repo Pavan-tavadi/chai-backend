@@ -50,7 +50,7 @@ const userSchems = new mongoose.Schema(
 userSchems.pre("save", async function (next) {
   if (!this.isModified("password")) return next(); //here you dont use if then the code will run every tine and store password every time which is bad
   //now this code runs only when the passsword changes
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
