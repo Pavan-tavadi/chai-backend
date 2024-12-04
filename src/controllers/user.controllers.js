@@ -2,7 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.models.js";
 import { uploadOnCloudunary } from "../utils/cloudunary.js";
-import { Apirefrence } from "../utils/Apirefrence";
+import { Apirefrence } from "../utils/Apirefrence.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   /**
@@ -23,14 +23,26 @@ const registerUser = asyncHandler(async (req, res) => {
   ) {
     throw new ApiError(400, "all feilds are required");
   }
-  const exiatedUser = User.findOne({
+  const exiatedUser = await User.findOne({
     $or: [{ username }, { email }],
   });
   if (exiatedUser) {
     throw new ApiError(400, "User with email or username exists");
   }
+
+  console.log("from req.files", req.files);
+
   const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+  let coverImageLocalPath;
+  if (
+    req.files &&
+    Array.isArray(req.files.coverImage) &&
+    req.files.coverImage > 0
+  ) {
+    coverImageLocalPath = req.files.coverImage[0].path;
+  }
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "avatar required");

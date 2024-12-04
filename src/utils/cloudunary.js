@@ -16,7 +16,10 @@ const uploadOnCloudunary = async (localFilePasth) => {
       resource_type: "auto",
     });
     //file added successfully
-    console.log("file added successfully", response.url);
+    // console.log("file added successfully", response.url);
+    console.log(response);
+
+    fs.unlinkSync(localFilePasth);
     return response;
   } catch (error) {
     fs.unlinkSync(localFilePasth); //romove the locally saved temporary file as the upload operation get failed
